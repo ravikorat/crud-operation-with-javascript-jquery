@@ -1,0 +1,156 @@
+<body>
+
+    <div class="container-fluid">
+        <div class="col-md-4">
+            <form method="post" id=frm>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="email" class="form-control" id="name" aria-describedby="emailHelp"
+                        placeholder="Enter Name" name="name">
+
+                </div>
+                <div class="form-group ">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+                </div>
+                <div class="form-group">
+                    <label for="gender" class="mr-2">Gender</label>
+                    <label class="d-inline-flex align-items-center"><input type="radio" class="form-check-label "
+                            id="id_male" name="gender" Value="Male">Male</label>
+                    <label class="d-inline-flex align-items-center"><input type="radio" class="form-check-label"
+                            id="id_female" name="gender" Value="Female">Female</label>
+
+                </div>
+                <div class="form-check-inline">
+                    <label for="checkbox" class="mr-2">Hobbies</label>
+                    <label class="d-inline-flex align-items-center"><input type="checkbox" class="form-check mr-2"
+                            id="id_cricket" name="hobbies[]" value="Cricket">Cricket</label>
+                    <label class="d-inline-flex align-items-center"><input type="checkbox" class="form-check ml-2"
+                            id="id_football" name="hobbies[]" value="Football">Football</label>
+                    <label class="d-inline-flex align-items-center"><input type="checkbox" class="form-check ml-2"
+                            id="id_Tarvelling" name="hobbies[]" value="Travelling">Travelling</label>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select class="form-control" id="id_country" name="country">
+                        <option>Select</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="state">state</label>
+                    <select class="form-control" id="id_state" name="state">
+                        <option>Select state</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="city">city</label>
+                    <select class="form-control" id="id_city" name="city">
+                        <option>Select city</option>
+
+                    </select>
+                </div>
+                <input type="hidden" name="hidden" id="hidden">
+                <div class="form-group">
+                    <label>Action</label>
+                    <button type="button" class="btn btn-primary ml-2" onclick="pushData();showData(myArray);"
+                        id="saveButton">Submit</button>
+                    <button type="reset" class="btn btn-dark ml-2" id="reset">Reset</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-md-8-">
+        <table class="table table-striped w-100 mb-0" id="tbl">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Hobbies</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">State</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="table-data w-100" id="table"></div>
+
+    </div>
+    </div>
+    <script>
+        var myArray = [];
+
+        function pushData() {
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var ele = document.getElementsByName('gender');
+            for (i = 0; i < ele.length; i++) {
+                if (ele[i].checked)
+                    var gender = ele[i].value;
+            }
+            // var checkedValue = null;
+            // var inputElements = document.getElementsByClassName('form-check');
+            // for(var i=0; inputElements[i]; ++i){
+            // if(inputElements[i].checked){
+            // checkedValue = inputElements[i].value;
+            // }
+            // }
+            var values = $('input:checkbox:checked.form-check').map(function () {
+                return this.value;
+            }).get();
+            var country = document.getElementById("id_country").value;
+            var state = document.getElementById("id_state").value;
+            var city = document.getElementById("id_city").value;
+
+
+            myArray.push(name, email, gender, values, country, state, city);
+            console.log(myArray);
+            //console.log(myArray[0])
+        }
+
+        function showData(myArray) {
+            var row = '';
+            // myArray.forEach(function(myArray,i){
+            // row+='<tr><td>${myArray[0]}</td><td>${myArray[1]}</td><td>${myArray[2]}</td><td>${myArray[3]}</td><td>${myArray[4]}</td><td>${myArray[5]}<td>${myArray[6]}</td></td> </tr>';
+            // })
+            // document.getElementById('tbl').innerHTML=row;
+            // for(var i=0;i<myArray.length;i++){
+            // row+='<tr><td>myArray[1]</td></tr>';
+            // }
+            // document.getElementById('tbl').innerHTML=row;
+
+        }
+
+        
+
+        $(document).ready(function () {
+            $("#saveButton").on("click", function () {
+                $("#reset").trigger("click");
+                
+                var counter = $("#hidden").val();
+                counter++;
+                var html = "<table class='table table-striped'>";
+
+                html += "<tbody>";
+                for (var j = 0; j < counter; j++) {
+                    html += "<tr>";
+                    for (var i = 0; i < myArray.length; i++) {
+                        // for (var j = 0; j < myArray.length; j++) {
+                        html += "<td>" + myArray[i] + "</td>";
+                        // }
+                    }
+                    html += "<td><input type='button' class='btn btn-primary' value='Edit'></td>"
+                    html += "</tr>";
+                }
+                html += "</tbody>";
+                html += "</table>";
+                $(".table-data").html(html);
+                delete[myArray];
+            });
+
+
+        });
+    </script>
+</body>
